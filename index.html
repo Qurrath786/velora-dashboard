@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Velora Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+</head>
+
+<body>
+
+  <!-- Background -->
+  <div class="bg-blur one"></div>
+  <div class="bg-blur two"></div>
+
+  <div class="container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <h1 class="logo">Velora</h1>
+
+      <div class="profile-card">
+
+  <div class="profile-ring">
+
+    <div class="profile-avatar">
+      QA
+    </div>
+
+  </div>
+
+  <h2>Qurrath Ul Aain</h2>
+
+  <p class="role">
+    IT Engineering Student
+  </p>
+
+  <div class="profile-tags">
+
+    <span>Python</span>
+
+    <span>Web Dev</span>
+
+    <span>AI</span>
+
+  </div>
+
+</div>
+      <div class="stats">
+
+        <div class="stat-box">
+          <h3 id="task-count">0</h3>
+          <p>Tasks</p>
+        </div>
+
+        <div class="stat-box">
+          <h3 id="completed-count">0</h3>
+          <p>Completed</p>
+        </div>
+
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- HERO -->
+      <div class="hero">
+
+        <h1>Stay Focused ⚡</h1>
+
+        <p>
+          Organize your tasks smartly and boost productivity.
+        </p>
+
+      </div>
+
+      <!-- TOP CARDS -->
+
+      <div class="top-cards">
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-brain"></i>
+
+          <h3>Focus Mode</h3>
+
+          <p>Deep productivity state</p>
+
+        </div>
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-bolt"></i>
+
+          <h3>Efficiency</h3>
+
+          <p>Track your momentum</p>
+
+        </div>
+
+        <div class="mini-card">
+
+          <i class="fa-solid fa-layer-group"></i>
+
+          <h3>Task System</h3>
+
+          <p>Smart daily organization</p>
+
+        </div>
+
+      </div>
+
+      <!-- ADVANCED TASK FORM -->
+
+      <div class="task-form">
+
+        <input
+          type="text"
+          id="task-title"
+          placeholder="Mission title..."
+        >
+
+        <textarea
+          id="task-desc"
+          placeholder="Describe your mission..."
+        ></textarea>
+
+        <div class="task-options">
+
+          <select id="task-priority">
+
+            <option>Low</option>
+
+            <option>Medium</option>
+
+            <option>High</option>
+
+          </select>
+
+          <input type="date" id="task-date">
+
+          <select id="task-category">
+
+            <option>Development</option>
+
+            <option>Study</option>
+
+            <option>Design</option>
+
+            <option>Personal</option>
+
+          </select>
+
+        </div>
+
+        <button id="add-task-btn">
+          Add Mission ✨
+        </button>
+
+      </div>
+
+      <!-- DASHBOARD GRID -->
+
+      <div class="dashboard-grid">
+
+        <!-- TASK BOARD -->
+
+        <div class="glass-card">
+
+          <div class="card-header">
+
+            <h2>Mission Board 🚀</h2>
+
+            <span id="live-time"></span>
+
+          </div>
+
+          <div class="task-list" id="task-list"></div>
+
+        </div>
+
+        <!-- QUOTES -->
+
+        <div class="glass-card quote-card">
+
+          <h2>Focus Quote ✨</h2>
+
+          <p id="quote-text">
+            Success starts with consistency.
+          </p>
+
+          <button id="new-quote-btn">
+            New Quote
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- CONTACT FORM -->
+
+      <div class="contact-card">
+
+        <h2>Feedback Form</h2>
+
+        <form id="contact-form">
+
+          <input
+            type="text"
+            id="name"
+            placeholder="Your Name"
+          />
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Your Email"
+          />
+
+          <textarea
+            id="message"
+            placeholder="Your Message"
+          ></textarea>
+
+          <button type="submit">
+            Submit Feedback
+          </button>
+
+        </form>
+
+        <p id="form-message"></p>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
