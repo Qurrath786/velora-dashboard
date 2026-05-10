@@ -11,11 +11,208 @@ const taskCount = document.getElementById("task-count");
 const completedCount =
   document.getElementById("completed-count");
 
+
+/* ADD TASK */
+let tasks = JSON.parse(
+  localStorage.getItem("veloraTasks")
+) || [];
+
 let totalTasks = 0;
 
 let completedTasks = 0;
+/* =========================
+   SAVE TASKS
+========================= */
 
-/* ADD TASK */
+function saveTasks(){
+
+  localStorage.setItem(
+    "veloraTasks",
+    JSON.stringify(tasks)
+  );
+
+}
+/* =========================
+   RENDER TASK
+========================= */
+
+function renderTask(taskData){
+
+  totalTasks++;
+
+  if(taskData.completed){
+    completedTasks++;
+  }
+
+  updateStats();
+
+  const task =
+    document.createElement("div");
+
+  task.classList.add("task-item");
+
+  if(taskData.completed){
+    task.classList.add("completed");
+  }
+
+  let priorityClass = "priority-low";
+
+  if(taskData.priority==="High"){
+    priorityClass = "priority-high";
+  }
+
+  if(taskData.priority==="Medium"){
+    priorityClass = "priority-medium";
+  }
+
+  task.innerHTML = `
+
+  <div class="task-header">
+
+    <div>
+
+      <h3 class="task-title">
+        ${taskData.title}
+      </h3>
+
+      <p class="task-desc">
+        ${taskData.desc || "No description added."}
+      </p>
+
+    </div>
+
+    <div class="priority-badge ${priorityClass}">
+      ${taskData.priority}
+    </div>
+
+  </div>
+
+  <div class="progress-section">
+
+    <div class="progress-bar">
+
+      <div
+        class="progress-fill"
+        style="
+          width:
+          ${taskData.completed ? "100%" : "55%"}
+        "
+      ></div>
+
+    </div>
+
+    <span class="progress-text">
+
+      ${
+        taskData.completed
+        ? "Completed"
+        : "In Progress"
+      }
+
+    </span>
+
+  </div>
+
+  <div class="task-footer">
+
+    <div class="task-meta">
+
+      <span>
+        📅 ${taskData.date || "No deadline"}
+      </span>
+
+      <span>
+        🗂 ${taskData.category}
+      </span>
+
+    </div>
+
+    <div class="task-actions">
+
+      <button class="complete-btn">
+        ✓ Complete
+      </button>
+
+      <button class="delete-btn">
+        🗑 Delete
+      </button>
+
+    </div>
+
+  </div>
+
+`;
+
+  taskList.prepend(task);
+
+  /* COMPLETE */
+
+  task
+  .querySelector(".complete-btn")
+  .addEventListener("click",()=>{
+
+    task.classList.toggle("completed");
+
+    const progressFill =
+      task.querySelector(".progress-fill");
+
+    const progressText =
+      task.querySelector(".progress-text");
+
+    taskData.completed =
+      !taskData.completed;
+
+    saveTasks();
+
+    if(task.classList.contains("completed")){
+
+      completedTasks++;
+
+      progressFill.style.width = "100%";
+
+      progressText.textContent =
+        "Completed";
+
+    }else{
+
+      completedTasks--;
+
+      progressFill.style.width = "55%";
+
+      progressText.textContent =
+        "In Progress";
+
+    }
+
+    updateStats();
+
+  });
+
+  /* DELETE */
+
+  task
+  .querySelector(".delete-btn")
+  .addEventListener("click",()=>{
+
+    totalTasks--;
+
+    if(task.classList.contains("completed")){
+      completedTasks--;
+    }
+
+    updateStats();
+
+    tasks = tasks.filter(
+      t => t.id !== taskData.id
+    );
+
+    saveTasks();
+
+    task.remove();
+
+  });
+
+}
 
 addBtn.addEventListener("click",()=>{
 
@@ -40,152 +237,34 @@ addBtn.addEventListener("click",()=>{
 
     return;
   }
+const taskData = {
 
-  totalTasks++;
+  id: Date.now(),
 
-  updateStats();
+  title,
 
-  const task = document.createElement("div");
+  desc,
 
-  task.classList.add("task-item");
+  priority,
 
-  let priorityClass = "priority-low";
+  date,
 
-  if(priority==="High"){
-    priorityClass = "priority-high";
-  }
+  category,
 
-  if(priority==="Medium"){
-    priorityClass = "priority-medium";
-  }
+  completed:false
 
-  task.innerHTML = `
+};
 
-  <div class="task-header">
+tasks.push(taskData);
 
-    <div>
+saveTasks();
+  renderTask(taskData);
 
-      <h3 class="task-title">
-        ${title}
-      </h3>
+/* CLEAR */
 
-      <p class="task-desc">
-        ${desc || "No description added."}
-      </p>
+document.getElementById("task-title").value="";
 
-    </div>
-
-    <div class="priority-badge ${priorityClass}">
-      ${priority}
-    </div>
-
-  </div>
-
-  <div class="progress-section">
-
-    <div class="progress-bar">
-
-      <div class="progress-fill"></div>
-
-    </div>
-
-    <span class="progress-text">
-      In Progress
-    </span>
-
-  </div>
-
-  <div class="task-footer">
-
-    <div class="task-meta">
-
-      <span>
-        📅 ${date || "No deadline"}
-      </span>
-
-      <span>
-        🗂 ${category}
-      </span>
-
-    </div>
-
-    <div class="task-actions">
-
-      <button class="complete-btn">
-        ✓ Complete
-      </button>
-
-      <button class="delete-btn">
-        🗑 Delete
-      </button>
-
-    </div>
-
-  </div>
-
-`;
-  taskList.prepend(task);
-
-  /* COMPLETE */
-task
-.querySelector(".complete-btn")
-.addEventListener("click",()=>{
-
-  task.classList.toggle("completed");
-
-  const progressFill =
-    task.querySelector(".progress-fill");
-
-  const progressText =
-    task.querySelector(".progress-text");
-
-  if(task.classList.contains("completed")){
-
-    completedTasks++;
-
-    progressFill.style.width = "100%";
-
-    progressText.textContent = "Completed";
-
-  }else{
-
-    completedTasks--;
-
-    progressFill.style.width = "55%";
-
-    progressText.textContent = "In Progress";
-  }
-
-  updateStats();
-
-});
-  
-  /* DELETE */
-
-  task
-    .querySelector(".delete-btn")
-    .addEventListener("click",()=>{
-
-      totalTasks--;
-
-      if(task.classList.contains("completed")){
-
-        completedTasks--;
-
-      }
-
-      updateStats();
-
-      task.remove();
-
-  });
-
-  /* CLEAR */
-
-  document.getElementById("task-title").value="";
-
-  document.getElementById("task-desc").value="";
-
+document.getElementById("task-desc").value="";
 });
 
 /* UPDATE STATS */
@@ -380,5 +459,14 @@ quizButtons.forEach((button)=>{
     }
 
   });
+
+});
+/* =========================
+   LOAD SAVED TASKS
+========================= */
+
+tasks.forEach((taskData)=>{
+
+  renderTask(taskData);
 
 });
