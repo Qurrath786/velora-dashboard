@@ -265,6 +265,7 @@ saveTasks();
 document.getElementById("task-title").value="";
 
 document.getElementById("task-desc").value="";
+document.getElementById("task-date").value="";
 });
 
 /* UPDATE STATS */
