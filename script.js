@@ -332,8 +332,7 @@ async function fetchQuote(){
       await response.json();
 
     quoteText.textContent =
-  `"${data.quote}"`;
-
+  `"${data.quote}" — ${data.author}`;
   }catch(error){
 
     quoteText.textContent =
