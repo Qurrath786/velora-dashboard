@@ -332,7 +332,7 @@ async function fetchQuote(){
       await response.json();
 
     quoteText.textContent =
-      `"${data.content}"`;
+  `"${data.quote}"`;
 
   }catch(error){
 
