@@ -573,10 +573,27 @@ body{
 ========================= */
 
 .task-form{
+
+  margin-top:35px;
+
+  padding:30px;
+
+  border-radius:28px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(18px);
+
   display:flex;
+
   flex-direction:column;
-  gap:18px;
-  margin-top:30px;
+
+  gap:20px;
+
 }
 
 .task-form input,
@@ -584,19 +601,66 @@ body{
 .task-form select{
 
   width:100%;
-  padding:18px;
+
+  padding:18px 20px;
+
+  background:
+    rgba(255,255,255,0.05);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
 
   border-radius:18px;
 
-  border:1px solid rgba(255,255,255,0.08);
-
-  background:rgba(255,255,255,0.05);
-
   color:white;
+
+  font-size:1rem;
 
   outline:none;
 
-  font-size:1rem;
+  font-family:'Poppins',sans-serif;
+
+  transition:0.3s ease;
+
+  appearance:none;
+
+  -webkit-appearance:none;
+
+  -moz-appearance:none;
+
+}
+
+/* FOCUS EFFECT */
+
+.task-form input:focus,
+.task-form textarea:focus,
+.task-form select:focus{
+
+  border:
+    1px solid #7c3aed;
+
+  box-shadow:
+    0 0 20px rgba(124,58,237,0.25);
+
+}
+
+/* DROPDOWN OPTIONS */
+
+.task-form select option{
+
+  background:#111827;
+
+  color:white;
+
+}
+
+
+select option{
+
+  background:#111827;
+
+  color:white;
+
 }
 
 .task-form textarea{
