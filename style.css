@@ -938,3 +938,132 @@ body{
   }
 
 }
+/* =========================
+   TASK 3 UPGRADES
+========================= */
+
+.quote-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+}
+
+.quote-header button{
+
+  width:50px;
+
+  height:50px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #06b6d4
+    );
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:0.4s ease;
+
+  font-size:1rem;
+}
+
+.quote-header button:hover{
+
+  transform:
+    rotate(180deg)
+    scale(1.08);
+
+}
+
+.quiz-card{
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  margin-top:30px;
+}
+
+.quiz-options{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:15px;
+
+  margin-top:20px;
+}
+
+.quiz-btn{
+
+  padding:15px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #06b6d4
+    );
+
+  color:white;
+
+  cursor:pointer;
+
+  transition:0.3s ease;
+
+  font-weight:600;
+
+  font-size:1rem;
+}
+
+.quiz-btn:hover{
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 10px 30px rgba(124,58,237,0.3);
+
+}
+
+#quiz-result{
+
+  margin-top:20px;
+
+  color:#06b6d4;
+
+  font-weight:600;
+
+  line-height:1.6;
+
+  font-size:1rem;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+  .quiz-options{
+
+    flex-direction:column;
+
+  }
+
+}

@@ -274,7 +274,7 @@ updateTime();
 
 /* =========================
    QUOTES
-========================= */
+========================= 
 
 const quotes = [
 
@@ -303,5 +303,83 @@ document
     quotes[Math.floor(Math.random()*quotes.length)];
 
   quoteText.textContent = random;
+
+});
+*/
+/* =========================
+   REAL API QUOTES
+========================= */
+
+const quoteText =
+  document.getElementById("quote-text");
+
+const quoteBtn =
+  document.getElementById("new-quote-btn");
+
+async function fetchQuote(){
+
+  quoteText.textContent =
+    "Generating inspiration...";
+
+  try{
+
+    const response =
+      await fetch(
+        "https://api.quotable.io/random"
+      );
+
+    const data =
+      await response.json();
+
+    quoteText.textContent =
+      `"${data.content}"`;
+
+  }catch(error){
+
+    quoteText.textContent =
+      "Failed to load quote.";
+
+  }
+
+}
+
+quoteBtn.addEventListener(
+  "click",
+  fetchQuote
+);
+
+fetchQuote();
+
+
+/* =========================
+   PRODUCTIVITY QUIZ
+========================= */
+
+const quizButtons =
+  document.querySelectorAll(".quiz-btn");
+
+const quizResult =
+  document.getElementById("quiz-result");
+
+quizButtons.forEach((button)=>{
+
+  button.addEventListener("click",()=>{
+
+    const type =
+      button.dataset.type;
+
+    if(type==="planner"){
+
+      quizResult.textContent =
+        "You are a Deep Focus Strategist ✨";
+
+    }else{
+
+      quizResult.textContent =
+        "You are a Creative Flow Thinker ⚡";
+
+    }
+
+  });
 
 });
