@@ -325,7 +325,7 @@ async function fetchQuote(){
 
     const response =
       await fetch(
-        "https://api.quotable.io/random"
+        "https://dummyjson.com/quotes/random"
       );
 
     const data =
