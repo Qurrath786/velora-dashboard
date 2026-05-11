@@ -27,43 +27,117 @@
 </head>
 
 <body>
-
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
   <!-- Background -->
   <div class="bg-blur one"></div>
   <div class="bg-blur two"></div>
+<!-- AUTH SCREEN -->
 
-  <div class="container">
+<div class="auth-screen" id="auth-screen">
+
+  <div class="auth-card">
+
+    <h1>Velora ✨</h1>
+
+    <p>
+      Your futuristic productivity workspace
+    </p>
+
+    <input
+      type="text"
+      id="auth-name"
+      placeholder="Full Name"
+    >
+
+    <input
+      type="email"
+      id="auth-email"
+      placeholder="Email Address"
+    >
+
+    <input
+      type="password"
+      id="auth-password"
+      placeholder="Password"
+    >
+    <input
+  type="text"
+  id="auth-role"
+  placeholder="Your Role"
+/>
+
+<input
+  type="text"
+  id="auth-skills"
+  placeholder="Skills (comma separated)"
+/>
+
+    <div class="auth-buttons">
+
+      <button id="signup-btn">
+        Sign Up
+      </button>
+
+      <button id="login-btn">
+        Login
+      </button>
+
+    </div>
+
+    <p id="auth-message"></p>
+
+  </div>
+
+</div>
+  <div class="container" id="dashboard">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
 
       <h1 class="logo">Velora</h1>
-
       <div class="profile-card">
 
   <div class="profile-ring">
 
-    <div class="profile-avatar">
-      QA
-    </div>
+    <div
+  class="profile-avatar"
+  id="profile-avatar"
+>
+  U
+</div>
 
   </div>
 
-  <h2>Qurrath Ul Aain</h2>
+  <h2 id="profile-name">
+  Guest User
+</h2>
 
-  <p class="role">
-    IT Engineering Student
-  </p>
+  <p class="role" id="profile-role">
+  Productivity Explorer
+</p>
 
-  <div class="profile-tags">
+  <div
+  class="profile-tags"
+  id="profile-tags"
+></div>
 
-    <span>Python</span>
+      <button id="logout-btn">
+       
 
-    <span>Web Dev</span>
+  <i class="fa-solid fa-right-from-bracket"></i>
 
-    <span>AI</span>
+  Logout
 
-  </div>
+</button>
+<button id="settings-btn">
+
+  <i class="fa-solid fa-gear"></i>
+
+  Edit Profile
+
+</button>
 
 </div>
       <div class="stats">
@@ -189,13 +263,40 @@
 
         <div class="glass-card">
 
-          <div class="card-header">
+<div class="card-header">
 
-            <h2>Mission Board 🚀</h2>
+  <h2>Mission Board 🚀</h2>
 
-            <span id="live-time"></span>
+  <span id="live-time"></span>
 
-          </div>
+</div>
+
+<div class="task-controls">
+
+  <input
+    type="text"
+    id="search-task"
+    placeholder="Search missions..."
+  >
+
+  <select id="filter-task">
+
+    <option value="all">
+      All Tasks
+    </option>
+
+    <option value="completed">
+      Completed
+    </option>
+
+    <option value="pending">
+      Pending
+    </option>
+
+  </select>
+
+</div>
+           
 
           <div class="task-list" id="task-list"></div>
 
@@ -265,6 +366,7 @@
         <form id="contact-form">
 
           <input
+
             type="text"
             id="name"
             placeholder="Your Name"
@@ -294,7 +396,53 @@
     </main>
 
   </div>
+<!-- PROFILE SETTINGS MODAL -->
 
+<div
+  class="settings-modal"
+  id="settings-modal"
+>
+
+  <div class="settings-card">
+
+    <h2>Edit Profile ✨</h2>
+
+    <input
+      type="text"
+      id="edit-name"
+      placeholder="Your Name"
+    >
+
+    <input
+      type="text"
+      id="edit-role"
+      placeholder="Your Role"
+    >
+
+    <input
+      type="text"
+      id="edit-skills"
+      placeholder="Skills"
+    >
+
+    <div class="settings-actions">
+
+      <button id="save-profile-btn">
+        Save Changes
+      </button>
+
+      <button id="close-settings-btn">
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+<!-- TOAST -->
+
+<div id="toast"></div>
   <script src="script.js"></script>
 
 </body>

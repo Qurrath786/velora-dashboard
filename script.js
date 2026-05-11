@@ -1,4 +1,28 @@
 /* =========================
+   TOAST FUNCTION
+========================= */
+
+function showToast(message){
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+
+    toast.classList.remove(
+      "show"
+    );
+
+  },3000);
+
+}
+/* =========================
    ADVANCED TASK SYSTEM
 ========================= */
 
@@ -13,8 +37,20 @@ const completedCount =
 
 
 /* ADD TASK */
+function getCurrentUser(){
+
+  return localStorage.getItem(
+    "veloraCurrentUser"
+  );
+
+}
+
 let tasks = JSON.parse(
-  localStorage.getItem("veloraTasks")
+
+  localStorage.getItem(
+    `veloraTasks_${getCurrentUser()}`
+  )
+
 ) || [];
 
 let totalTasks = 0;
@@ -27,9 +63,12 @@ let completedTasks = 0;
 function saveTasks(){
 
   localStorage.setItem(
-    "veloraTasks",
-    JSON.stringify(tasks)
-  );
+
+  `veloraTasks_${getCurrentUser()}`,
+
+  JSON.stringify(tasks)
+
+);
 
 }
 /* =========================
@@ -95,7 +134,7 @@ function renderTask(taskData){
         class="progress-fill"
         style="
           width:
-          ${taskData.completed ? "100%" : "55%"}
+          ${taskData.progress}%
         "
       ></div>
 
@@ -103,15 +142,36 @@ function renderTask(taskData){
 
     <span class="progress-text">
 
-      ${
-        taskData.completed
-        ? "Completed"
-        : "In Progress"
-      }
+     
+      ${taskData.progress}% Completed
+  
 
     </span>
 
   </div>
+  <select class="progress-select">
+
+  <option value="0">
+    0%
+  </option>
+
+  <option value="25">
+    25%
+  </option>
+
+  <option value="50">
+    50%
+  </option>
+
+  <option value="75">
+    75%
+  </option>
+
+  <option value="100">
+    100%
+  </option>
+
+</select>
 
   <div class="task-footer">
 
@@ -144,7 +204,53 @@ function renderTask(taskData){
 `;
 
   taskList.prepend(task);
+  const progressSelect =
+  task.querySelector(
+    ".progress-select"
+  );
 
+progressSelect.value =
+  taskData.progress;
+
+progressSelect.addEventListener(
+  "change",
+  ()=>{
+
+    taskData.progress =
+      progressSelect.value;
+
+    task.querySelector(
+      ".progress-fill"
+    ).style.width =
+      `${taskData.progress}%`;
+
+    task.querySelector(
+      ".progress-text"
+    ).textContent =
+      `${taskData.progress}% Completed`;
+
+    if(taskData.progress == 100){
+
+      task.classList.add(
+        "completed"
+      );
+
+      showToast(
+        "Mission Completed ✅"
+      );
+
+    }else{
+
+      task.classList.remove(
+        "completed"
+      );
+
+    }
+
+    saveTasks();
+
+  }
+);
   /* COMPLETE */
 
   task
@@ -163,6 +269,19 @@ function renderTask(taskData){
       !taskData.completed;
 
     saveTasks();
+    if(task.classList.contains("completed")){
+
+  showToast(
+    "Mission Completed ✅"
+  );
+
+}else{
+
+  showToast(
+    "Mission Reopened 🔄"
+  );
+
+}
 
     if(task.classList.contains("completed")){
 
@@ -207,6 +326,9 @@ function renderTask(taskData){
     );
 
     saveTasks();
+    showToast(
+  "Mission Deleted 🗑️"
+);
 
     task.remove();
 
@@ -233,7 +355,9 @@ addBtn.addEventListener("click",()=>{
 
   if(title.trim()===""){
 
-    alert("Please enter mission title!");
+    showToast(
+  "Enter Mission Title ⚠️"
+);
 
     return;
   }
@@ -251,13 +375,17 @@ const taskData = {
 
   category,
 
-  completed:false
+  completed:false,
+  progress:0
 
 };
 
 tasks.push(taskData);
 
 saveTasks();
+showToast(
+  "Mission Added 🚀"
+);
   renderTask(taskData);
 
 /* CLEAR */
@@ -344,8 +472,14 @@ function updateTime(){
 
   });
 
-  document.getElementById("live-time")
-    .textContent = time;
+  const liveTime =
+  document.getElementById("live-time");
+
+if(liveTime){
+
+  liveTime.textContent = time;
+
+}
 }
 
 setInterval(updateTime,1000);
@@ -469,5 +603,521 @@ quizButtons.forEach((button)=>{
 tasks.forEach((taskData)=>{
 
   renderTask(taskData);
+
+});
+/* =========================
+   SEARCH + FILTER
+========================= */
+
+const searchInput =
+  document.getElementById("search-task");
+
+const filterSelect =
+  document.getElementById("filter-task");
+
+function filterTasks(){
+
+  const searchValue =
+    searchInput.value.toLowerCase();
+
+  const filterValue =
+    filterSelect.value;
+
+  const allTasks =
+    document.querySelectorAll(".task-item");
+
+  allTasks.forEach((task)=>{
+
+    const title =
+      task.querySelector(".task-title")
+      .textContent
+      .toLowerCase();
+
+    const isCompleted =
+      task.classList.contains("completed");
+
+    let matchesSearch =
+      title.includes(searchValue);
+
+    let matchesFilter = true;
+
+    if(filterValue==="completed"){
+
+      matchesFilter = isCompleted;
+
+    }
+
+    if(filterValue==="pending"){
+
+      matchesFilter = !isCompleted;
+
+    }
+
+    if(matchesSearch && matchesFilter){
+
+      task.style.display = "block";
+
+    }else{
+
+      task.style.display = "none";
+
+    }
+
+  });
+
+}
+
+searchInput.addEventListener(
+  "input",
+  filterTasks
+);
+
+filterSelect.addEventListener(
+  "change",
+  filterTasks
+);
+/* =========================
+   AUTHENTICATION SYSTEM
+========================= */
+
+const authScreen =
+  document.getElementById("auth-screen");
+
+const dashboard =
+  document.getElementById("dashboard");
+
+const signupBtn =
+  document.getElementById("signup-btn");
+
+const loginBtn =
+  document.getElementById("login-btn");
+
+const authMessage =
+  document.getElementById("auth-message");
+
+/* CHECK SESSION */
+
+const currentUser =
+  localStorage.getItem("veloraCurrentUser");
+
+if(currentUser){
+  const users = JSON.parse(
+  localStorage.getItem("veloraUsers")
+) || [];
+
+const activeUser =
+  users.find(
+    user => user.email === currentUser
+  );
+if(activeUser){
+
+  document.getElementById(
+    "profile-name"
+  ).textContent =
+    activeUser.name;
+
+  document.getElementById(
+    "profile-avatar"
+  ).textContent =
+    activeUser.name
+    .charAt(0)
+    .toUpperCase();
+
+  document.getElementById(
+    "profile-role"
+  ).textContent =
+    activeUser.role;
+
+  const tagsContainer =
+    document.getElementById(
+      "profile-tags"
+    );
+
+  tagsContainer.innerHTML = "";
+
+  (activeUser.skills || "")
+.split(",")
+
+  .forEach((skill)=>{
+
+    const span =
+      document.createElement("span");
+
+    span.textContent =
+      skill.trim();
+
+    tagsContainer
+    .appendChild(span);
+
+  });
+
+}
+
+  authScreen.style.display = "none";
+  dashboard.style.display = "grid";
+
+  
+
+}
+
+/* SIGNUP */
+
+signupBtn.addEventListener("click",()=>{
+
+  const name =
+    document
+    .getElementById("auth-name")
+    .value;
+
+  const email =
+    document
+    .getElementById("auth-email")
+    .value;
+
+  const password =
+    document
+    .getElementById("auth-password")
+    .value;
+    const role =
+  document
+  .getElementById("auth-role")
+  .value;
+
+const skills =
+  document
+  .getElementById("auth-skills")
+  .value;
+
+  if(
+    name === "" ||
+    email === "" ||
+    password === ""
+  ){
+
+    authMessage.textContent =
+      "Please fill all fields.";
+
+    return;
+
+  }
+
+  
+const users = JSON.parse(
+  localStorage.getItem("veloraUsers")
+) || [];
+
+const existingUser =
+  users.find(
+    user => user.email === email
+  );
+
+if(existingUser){
+
+  authMessage.textContent =
+    "User already exists.";
+
+  return;
+
+}
+
+const userData = {
+
+  name,
+
+  email,
+
+  password,
+
+  role,
+
+  skills
+
+};
+
+users.push(userData);
+
+localStorage.setItem(
+  "veloraUsers",
+  JSON.stringify(users)
+);
+  localStorage.setItem(
+    "veloraCurrentUser",
+    email
+  );
+
+  authMessage.textContent =
+    "Signup successful!";
+
+  authScreen.style.display = "none";
+  
+
+  dashboard.style.display = "grid";
+  document.getElementById(
+  "profile-name"
+).textContent = name;
+
+document.getElementById(
+  "profile-avatar"
+).textContent =
+  name.charAt(0).toUpperCase();
+document.getElementById(
+  "profile-role"
+).textContent = role;
+
+const tagsContainer =
+  document.getElementById(
+    "profile-tags"
+  );
+
+tagsContainer.innerHTML = "";
+
+(skills || "")
+.split(",").forEach((skill)=>{
+
+  const span =
+    document.createElement("span");
+
+  span.textContent =
+    skill.trim();
+
+  tagsContainer.appendChild(span);
+
+});
+});
+
+
+/* LOGIN */
+
+loginBtn.addEventListener("click",()=>{
+
+  const email =
+    document
+    .getElementById("auth-email")
+    .value;
+
+  const password =
+    document
+    .getElementById("auth-password")
+    .value;
+
+  const users = JSON.parse(
+  localStorage.getItem("veloraUsers")
+) || [];
+
+const savedUser =
+  users.find(
+    user =>
+      user.email === email &&
+      user.password === password
+  );
+
+  if(savedUser){
+
+    localStorage.setItem(
+      "veloraCurrentUser",
+      email
+    );
+
+    authScreen.style.display = "none";
+
+    dashboard.style.display = "grid";
+    document.getElementById(
+  "profile-name"
+).textContent = savedUser.name;
+
+document.getElementById(
+  "profile-avatar"
+).textContent =
+  savedUser.name.charAt(0).toUpperCase();
+  document.getElementById(
+  "profile-role"
+).textContent =
+  savedUser.role || "User";
+
+const tagsContainer =
+  document.getElementById(
+    "profile-tags"
+  );
+
+tagsContainer.innerHTML = "";
+
+(savedUser.skills || "")
+.split(",")
+
+.forEach((skill)=>{
+
+  if(skill.trim() !== ""){
+
+    const span =
+      document.createElement("span");
+
+    span.textContent =
+      skill.trim();
+
+    tagsContainer.appendChild(span);
+
+  }
+
+});
+
+  }else{
+
+    authMessage.textContent =
+      "Invalid login credentials.";
+
+  }
+
+});
+/* =========================
+   LOGOUT
+========================= */
+
+const logoutBtn =
+  document.getElementById("logout-btn");
+
+logoutBtn.addEventListener("click",()=>{
+
+  localStorage.removeItem(
+    "veloraCurrentUser"
+  );
+
+  location.reload();
+  showToast(
+  "Logged Out 👋"
+);
+
+});
+/* =========================
+   PROFILE SETTINGS
+========================= */
+
+const settingsBtn =
+  document.getElementById(
+    "settings-btn"
+  );
+
+const settingsModal =
+  document.getElementById(
+    "settings-modal"
+  );
+
+const closeSettingsBtn =
+  document.getElementById(
+    "close-settings-btn"
+  );
+
+const saveProfileBtn =
+  document.getElementById(
+    "save-profile-btn"
+  );
+
+settingsBtn.addEventListener(
+  "click",
+  ()=>{
+
+    const currentUser =
+      localStorage.getItem(
+        "veloraCurrentUser"
+      );
+
+    const users = JSON.parse(
+      localStorage.getItem(
+        "veloraUsers"
+      )
+    ) || [];
+
+    const activeUser =
+      users.find(
+        user =>
+          user.email === currentUser
+      );
+
+    if(activeUser){
+
+      document.getElementById(
+        "edit-name"
+      ).value =
+        activeUser.name || "";
+
+      document.getElementById(
+        "edit-role"
+      ).value =
+        activeUser.role || "";
+
+      document.getElementById(
+        "edit-skills"
+      ).value =
+        activeUser.skills || "";
+
+    }
+
+    settingsModal.style.display =
+      "flex";
+
+});
+
+closeSettingsBtn.addEventListener(
+  "click",
+  ()=>{
+
+    settingsModal.style.display =
+      "none";
+
+});
+
+saveProfileBtn.addEventListener(
+  "click",
+  ()=>{
+
+    const currentUser =
+      localStorage.getItem(
+        "veloraCurrentUser"
+      );
+
+    const users = JSON.parse(
+      localStorage.getItem(
+        "veloraUsers"
+      )
+    ) || [];
+
+    const userIndex =
+      users.findIndex(
+        user =>
+          user.email === currentUser
+      );
+
+    if(userIndex !== -1){
+
+      users[userIndex].name =
+        document.getElementById(
+          "edit-name"
+        ).value;
+
+      users[userIndex].role =
+        document.getElementById(
+          "edit-role"
+        ).value;
+
+      users[userIndex].skills =
+        document.getElementById(
+          "edit-skills"
+        ).value;
+
+      localStorage.setItem(
+        "veloraUsers",
+        JSON.stringify(users)
+      );
+
+      showToast(
+  "Profile Updated ✨"
+);
+
+setTimeout(()=>{
+
+  location.reload();
+
+},1500);
+
+    }
 
 });
